@@ -3,7 +3,7 @@ const app = express();
 require('dotenv').config();
 const myFirstController = require('./controllers/myFirtsController');
 const cors = require('cors');
-// const connect = require('./database/connect');
+const connect = require('./database/connect');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -12,7 +12,7 @@ app.use(express.urlencoded({extended: true}));
 // res = response
 app.post('/', myFirstController.helloWorld);
 
-// connect.createConnection();
+connect.createConnection();
 
 app.use('/api/v1/user', require('./routes/userRoutes'));
 app.use('/api/v2/time', require('./routes/userRoutes1'));
