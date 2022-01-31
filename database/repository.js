@@ -27,3 +27,47 @@ module.exports.selectAll = async (data) => {
   }
   return response;
 }
+
+module.exports.create = async (obj) => {
+  let response = { status: false };
+  try {
+    const doc = await obj.save();
+    response = {
+      status: true,
+      result: doc,
+    };
+  } catch(err) {
+    console.log('ERROR-repository-create: ', err);
+  }
+  return response;
+}
+
+module.exports.update = async (data) => {
+  let response = { status: false };
+  try {
+    const doc = await data.model.findOneAndUpdate(data._id, data.updateQuery, {projection: data.projection, new: true});
+    response = {
+      status: true,
+      result: doc,
+    };
+  } catch(err) {
+    console.log('ERROR-repository-update: ', err);
+  }
+  return response;
+}
+
+module.exports.delete = async (data) => {
+  let responseObj = { status: false };
+  try {
+  const doc = await data.model.findOneAndDelete(data.findQuery,
+  { projection: data.projection });
+  responseObj = {
+  result: doc,
+  status: true
+  };
+  } catch (error) {
+  responseObj.error = error;
+  console.log(`ERROR-crudRepository-findOneAndDelete: ${error}`);
+  }
+  return responseObj;
+  };

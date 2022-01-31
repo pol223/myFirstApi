@@ -21,4 +21,14 @@ router.get('/list',
   userController.selectAll
 );
 
+router.put('/update/:id',
+  joiMiddleware.validate(userSchemas.selectUserSchema, 'params'),
+  joiMiddleware.validate(userSchemas.updateUserSchema, 'body'),
+  userController.update
+);
+
+router.delete('/delete/:id',
+joiMiddleware.validate(userSchemas.selectUserSchema, 'params'),
+userController.delete);
+
 module.exports = router;

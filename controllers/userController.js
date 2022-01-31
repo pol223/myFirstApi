@@ -37,15 +37,59 @@ module.exports = {
     }
   },
 
-  create: (req, res) => {
-    const user = req.body;
-    user.id = users.length + 1;
-
-    users.push(user);
-
-    res.status(status.created).send(user);
+  create: async (req, res) => {
+    const response = { status: c.status.serverError, msg: 'Internal server error' };
+    try {
+      const user = req.body;
+      const resFromService = await userService.create(user);
+      if (resFromService.status) {
+        response.status = c.status.created;
+        response.msg = 'Film created';
+        response.body = resFromService.result;
+      }
+    } catch(err) {
+      console.log('ERROR-userController-create: ', err);
+      response.error = err;
+    }
+    res.status(response.status).send(response);
   },
 
+  update: async (req, res) => {
+    const response = { status: c.status.serverError, msg: 'Internal server error' };
+    try {
+      const user = req.body;
+      user.id = req.params.id;
+      const resFromService = await userService.update(user);
+      if (resFromService.status) {
+        response.status = c.status.ok;
+        response.msg = 'Film update';
+        response.body = resFromService.result;
+      }
+    } catch(err) {
+      console.log('ERROR-userController-update: ', err);
+      response.error = err;
+    }
+    res.status(response.status).send(response);
+  },
+
+  delete: async (req, res) => {
+    const responseObj = { status: c.status.serverError, msg: 'Internal server error' };
+    try {
+    const user = req.body;
+    user.id = req.params.id;
+    const responseFromService = await userService.delete(user);
+    if (responseFromService.status) {
+    responseObj.body = responseFromService.result;
+    responseObj.msg = 'Film removed successfully';
+    responseObj.status = 200;
+    }
+    } catch (error) {
+    responseObj.error = error;
+    console.log('ERROR-userController-delete: ${error}');
+    }
+    return res.status(responseObj.status).send(responseObj);
+    },
+    
   selectById: async (req, res) => {
     const response = { status: c.status.serverError, msg: 'Internal server error' };
     try {

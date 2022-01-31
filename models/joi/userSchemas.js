@@ -2,7 +2,15 @@ const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi);
 
 module.exports.createUserSchema = Joi.object({
-  name: Joi.string().alphanum().required(),
+  title: Joi.string().alphanum().required(),
+  anoEstreno: Joi.string().alphanum().required(),
+  duracion: Joi.string().alphanum().required()
+});
+
+module.exports.updateUserSchema = Joi.object({
+  title: Joi.string().alphanum().required(),
+  anoEstreno: Joi.string().alphanum().required(),
+  duracion: Joi.string().alphanum().required()
 });
 
 module.exports.selectUserSchema = Joi.object({
